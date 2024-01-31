@@ -1,0 +1,16 @@
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\App.g.cs
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam_MarkupCompile.cache
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\bin\Debug\pm-exam.exe.config
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\bin\Debug\pm-exam.exe
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\bin\Debug\pm-exam.pdb
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\SignInOrRegistration.g.cs
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam_MarkupCompile.lref
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\SignInOrRegistration.baml
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam.g.resources
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm_exam.Properties.Resources.resources
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam.csproj.GenerateResource.cache
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam.exe
+C:\Users\User\Desktop\Мое\academy\курсач\pm-exam\pm-exam\pm-exam\obj\Debug\pm-exam.pdb

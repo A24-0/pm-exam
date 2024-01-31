@@ -1,0 +1,26 @@
+﻿<Application x:Class="pm_exam.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:pm_exam"
+             StartupUri="SignInOrRegistration.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MenuButtonTheme.xaml"/>
+                <ResourceDictionary Source="/TextboxTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type local:SignInOrRegistrationViewModel}">
+                <local:SignInOrRegistration/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type local:SignIn}">
+                <local:SignInView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type local:Registration}">
+                <local:RegistrationView/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
