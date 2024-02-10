@@ -5,8 +5,60 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:pm_exam"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="350" d:DesignWidth="700">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="250"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="250"/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid 
+            x:Name="MainDataGrid"
+            IsReadOnly="True"
+            Grid.RowSpan="3"
+            Grid.Column="0"
+            AutoGenerateColumns="False"
+            Margin="5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding ServiceName}" CanUserResize="False" Width="*"/>
+                <DataGridTextColumn Header="Пароль" Binding="{Binding EncryptedText}" CanUserResize="False" Width="*"/>
+                <DataGridTextColumn Header="Приоритет" Binding="{Binding Priority}" CanUserResize="False" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border Background="#586981" Grid.Row="1" Grid.Column="1" Margin="5">
+            <StackPanel 
+                x:Name="AddPasswordPanel" 
+                Orientation="Vertical"
+                Margin="10">
+                <Label Content="Название" HorizontalAlignment="Center"/>
+                <TextBox x:Name="NameTextBox" Margin="0,5"/>
+                <Label Content="Пароль" HorizontalAlignment="Center"/>
+                <TextBox x:Name="PasswordTextBox" Margin="0,5"/>
+                <Label Content="Приоритет" HorizontalAlignment="Center"/>
+                <ComboBox x:Name="PriorityComboBox" Margin="0,5"
+                          SelectedIndex="0" HorizontalContentAlignment="Center">
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                </ComboBox>
+                <Button Content="Добавить" Width="100" 
+                        HorizontalAlignment="Center" Margin="0,20,0,0"
+                        Click="AddButton_Click"/>
+            </StackPanel>
+        </Border>
+        <Border Background="#FF2C3E50" Grid.Column="1" Grid.Row="2" Margin="5">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5">
+                <Button Content="Удалить" Margin="5"
+                        Click="DeleteButton_Click"/>
+                <Button Content="Копировать пароль" Margin="5"
+                        Click="CopyButton_Click"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

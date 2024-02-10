@@ -7,46 +7,40 @@
         mc:Ignorable="d"
             Title="SignInOrRegistration" 
     Height="400" Width="800"
-    WindowStyle="None"
-    ResizeMode="NoResize"
-    Background="Transparent"
-    AllowsTransparency="True">
+        Background="#586981">
 
     <Window.DataContext>
         <local:SignInOrRegistrationViewModel/>
     </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-    <Border Background="#273537"
-     CornerRadius="20">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="75"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-
-            <StackPanel Grid.Row="1">
-                <RadioButton Content="Вход"
+        <StackPanel Grid.Row="1">
+            <RadioButton Content="Вход"
                       Height="50"
+                      Style="{StaticResource MenuButtonTheme}"
                       Foreground="White"
                       FontSize="14"
                       IsChecked="True"
                       Command="{Binding SignInViewCommand}"/>
-                <RadioButton Content="Регистрация"
+            <RadioButton Content="Регистрация"
                        Height="50"
+                       Style="{StaticResource MenuButtonTheme}"
                        Foreground="White"
                        FontSize="14"
                        Command="{Binding RegistrationViewCommand}"/>
-            </StackPanel>
+        </StackPanel>
 
-            <ContentControl Grid.Row="1"
+        <ContentControl Grid.Row="1"
                      Grid.Column="1"
                      Margin="10"
                      Content="{Binding CurrentView}"/>
-        </Grid>
-    </Border>
+    </Grid>
 </Window>

@@ -5,8 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:pm_exam"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="450" Width="800"
+        Background="Transparent">
+
+    <Border Background="#586982">
+        <Grid Background="#586982">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Row="1" Background="#FF2C3E50">
+                <RadioButton Content="Пароли"
+                   Height="50"
+                   Style="{StaticResource MenuButtonTheme}"
+                   Foreground="White"
+                   FontSize="14"
+                   IsChecked="True"
+                   Command="{Binding MainViewCommand}"/>
+                <RadioButton Content="Надежность пароля"
+                   Height="50"
+                   Style="{StaticResource MenuButtonTheme}"
+                   Foreground="White"
+                   FontSize="14"
+                   Command="{Binding CheckPasswordStrengthViewCommand}"/>
+                <RadioButton Content="Сгенерировать пароль"
+                    Height="50"
+                    Style="{StaticResource MenuButtonTheme}"
+                    Foreground="White"
+                    FontSize="14"
+                    Command="{Binding GeneratePasswordViewCommand}"/>
+            </StackPanel>
+
+            <ContentControl Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="10"
+                  Content="{Binding CurrentView}"/>
+        </Grid>
+    </Border>
 </Window>
