@@ -26,7 +26,19 @@
             Margin="5">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Название" Binding="{Binding ServiceName}" CanUserResize="False" Width="*"/>
-                <DataGridTextColumn Header="Пароль" Binding="{Binding EncryptedText}" CanUserResize="False" Width="*"/>
+                <DataGridTemplateColumn Header="Пароль" Width="*">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <PasswordBox local:PasswordBoxHelper.Attach="True"
+                         local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Приоритет" Binding="{Binding Priority}" CanUserResize="False" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>

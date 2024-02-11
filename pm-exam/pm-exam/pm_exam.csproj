@@ -46,6 +46,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -79,6 +80,7 @@
     </Compile>
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ObservableObject.cs" />
+    <Compile Include="OutputData.cs" />
     <Compile Include="pm_Model.cs" />
     <Compile Include="Registration.cs" />
     <Compile Include="RegistrationView.xaml.cs">

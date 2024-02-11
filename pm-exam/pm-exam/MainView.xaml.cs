@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
 using System.Runtime.Remoting.Contexts;
+using System.Security;
 using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,6 +24,88 @@ using System.Windows.Shapes;
 
 namespace pm_exam
 {
+    public static class PasswordBoxHelper
+    {
+        public static readonly DependencyProperty PasswordProperty =
+            DependencyProperty.RegisterAttached("Password",
+            typeof(string), typeof(PasswordBoxHelper),
+            new FrameworkPropertyMetadata(string.Empty, OnPasswordPropertyChanged));
+
+        public static readonly DependencyProperty AttachProperty =
+            DependencyProperty.RegisterAttached("Attach",
+            typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false, Attach));
+
+        private static readonly DependencyProperty IsUpdatingProperty =
+            DependencyProperty.RegisterAttached("IsUpdating", typeof(bool), typeof(PasswordBoxHelper));
+
+        public static string GetPassword(DependencyObject dp)
+        {
+            return (string)dp.GetValue(PasswordProperty);
+        }
+
+        public static void SetPassword(DependencyObject dp, string value)
+        {
+            dp.SetValue(PasswordProperty, value);
+        }
+
+        public static bool GetAttach(DependencyObject dp)
+        {
+            return (bool)dp.GetValue(AttachProperty);
+        }
+
+        public static void SetAttach(DependencyObject dp, bool value)
+        {
+            dp.SetValue(AttachProperty, value);
+        }
+
+        private static bool GetIsUpdating(DependencyObject dp)
+        {
+            return (bool)dp.GetValue(IsUpdatingProperty);
+        }
+
+        private static void SetIsUpdating(DependencyObject dp, bool value)
+        {
+            dp.SetValue(IsUpdatingProperty, value);
+        }
+
+        private static void OnPasswordPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            passwordBox.PasswordChanged -= PasswordChanged;
+
+            if (!(bool)GetIsUpdating(passwordBox))
+            {
+                passwordBox.Password = (string)e.NewValue;
+            }
+            passwordBox.PasswordChanged += PasswordChanged;
+        }
+
+        private static void Attach(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+
+            if (passwordBox == null)
+                return;
+
+            if ((bool)e.OldValue)
+            {
+                passwordBox.PasswordChanged -= PasswordChanged;
+            }
+
+            if ((bool)e.NewValue)
+            {
+                passwordBox.PasswordChanged += PasswordChanged;
+            }
+        }
+
+        private static void PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            SetIsUpdating(passwordBox, true);
+            SetPassword(passwordBox, passwordBox.Password);
+            SetIsUpdating(passwordBox, false);
+        }
+    }
     public partial class MainView : UserControl
     {
         private readonly int _userID;
@@ -38,12 +124,24 @@ namespace pm_exam
                          .Select(item => new
                          {
                             ServiceName = item.ServiceName,
-                            Password = item.EncryptedText,
-                            Priority = item.Priority
+                            EncryptedText = item.EncryptedText,
+                            Priority = item.Priority,
+                            PasswordKey = item.PasswordKey,
+                            IV = item.IV
                          })
                          .ToList();
-
-                MainDataGrid.ItemsSource = items;
+                List<OutputData> outputData = new List<OutputData>();
+                
+                foreach(var item in items )
+                {   
+                    int passwordLength = new Random().Next(8, 127);
+                    outputData.Add(new OutputData { ServiceName = item.ServiceName,
+                        Password = Membership.GeneratePassword(passwordLength, new Random().Next(1, passwordLength)),
+                        SecretPassword = new NetworkCredential("", DecryptAES(item.EncryptedText, item.PasswordKey, item.IV)).SecurePassword,
+                        Priority = item.Priority
+                    });
+                }
+                MainDataGrid.ItemsSource = outputData;
             }
         }
 
@@ -78,26 +176,36 @@ namespace pm_exam
         {
             if (MainDataGrid.SelectedItem != null)
             {
-                EncryptedData selectedItem = (EncryptedData)MainDataGrid.SelectedItem;
+                OutputData selectedItem = (OutputData)MainDataGrid.SelectedItem;
 
                 using (pm_Model db = new pm_Model())
                 {
-                    var itemToDelete = db.EncryptedData.FirstOrDefault(item => item.PasswordID == selectedItem.PasswordID);
+                    Expression<Func<EncryptedData, bool>> ex = item => DecryptAES(item.EncryptedText, item.PasswordKey, item.IV)
+                    == new NetworkCredential("", selectedItem.SecretPassword).Password;
+                    var itemToDelete = db.EncryptedData.Where(ex.Compile()).FirstOrDefault();
 
                     if (itemToDelete != null)
                     {
                         db.EncryptedData.Remove(itemToDelete);
+                        db.SaveChanges();
+                        LoadData();
                     }
+                    
                 }
             }
         }
 
         private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
+            OutputData selectedItem = (OutputData)MainDataGrid.SelectedItem;
             using (pm_Model db = new pm_Model())
             {
-                EncryptedData password = (EncryptedData)MainDataGrid.SelectedItem;
-                var copyPassword = db.EncryptedData.FirstOrDefault(item => item.PasswordID == password.PasswordID);
+                //Expression<Func<EncryptedData, bool>> ex = item => DecryptAES(item.EncryptedText, item.PasswordKey, item.IV) 
+                //== DecryptAES(selectedItem.EncryptedText, item.PasswordKey, item.IV);
+                Expression<Func<EncryptedData, bool>> ex = item => DecryptAES(item.EncryptedText, item.PasswordKey, item.IV)
+                == new NetworkCredential("", selectedItem.SecretPassword).Password;
+
+                var copyPassword = db.EncryptedData.Where(ex.Compile()).FirstOrDefault();
 
                 if (copyPassword != null)
                 {
@@ -144,10 +252,11 @@ namespace pm_exam
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
-                            return srDecrypt.ReadToEnd();
+                             return srDecrypt.ReadToEnd();
                         }
                     }
                 }
+
             }
         }
         static byte[] GenerateRandomKey()
