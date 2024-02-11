@@ -56,6 +56,5 @@
 
 Если у вас есть вопросы или предложения, связанные с проектом, вы можете связаться с нами по следующим адресам:
 
-* Email: your-email@example.com
-* Twitter: [@yourhandle](https://twitter.com/yourhandle)
-* LinkedIn: [Your Name](https://www.linkedin.com/in/yourname/)
+* Email: desu99@bk.ru
+* Telegram: [@A24_AAA](https://t.me/A24_AAA)
